@@ -2,6 +2,9 @@
 .idea/
 
 *.o
+*.ko
+*.cmd
+*.order
 build/
 cmake-build-debug/
 cmake-build-release/
