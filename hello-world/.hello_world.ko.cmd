@@ -1,1 +1,0 @@
-cmd_/home/islam/modules-dev/hello-world/hello_world.ko := ld -r -m elf_x86_64  -z max-page-size=0x200000 -z noexecstack  -T /usr/src/linux-headers-4.19.0-23-common/scripts/module-common.lds  --build-id  -o /home/islam/modules-dev/hello-world/hello_world.ko /home/islam/modules-dev/hello-world/hello_world.o /home/islam/modules-dev/hello-world/hello_world.mod.o ;  true
