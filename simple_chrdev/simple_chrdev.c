@@ -97,6 +97,13 @@ static int __init moduleLoad(void) {
     printk(KERN_INFO "Load simple character linux module(%s): the process name=\"%s\" and pid=%i\n",
             deviceName, current->comm, current->pid);
 
+	// allocation memory buffer for our device and set the buffer to 0
+    devBuffer = kzalloc(devBufferCapacity, GFP_KERNEL);
+    if (!devBuffer) {
+        printk(KERN_INFO "Can`t allocate memory buffer for our device==%s", deviceName);
+        return -ENOMEM;
+    }
+
     // allocate device number for this module
     if (alloc_chrdev_region(&device, 0, 1, deviceName) != 0) {
         printk(KERN_INFO "Can`t allocate character device number for module=%s\n", deviceName);
@@ -121,13 +128,6 @@ static int __init moduleLoad(void) {
     if (cdev_add(cdevice, device, 1) != 0) {
         printk(KERN_INFO "Can`t add new character device to kernel");
         return -EBUSY;
-    }
-
-    // allocation memory buffer for our device and set the buffer to 0
-    devBuffer = kzalloc(devBufferCapacity, GFP_KERNEL);
-    if (!devBuffer) {
-        printk(KERN_INFO "Can`t allocate memory buffer for our device==%s", deviceName);
-        return -ENOMEM;
     }
 
     printk(KERN_INFO "The module: {name=%s, major=%d, minor=%d} was successful registered in system kernel\n", 
