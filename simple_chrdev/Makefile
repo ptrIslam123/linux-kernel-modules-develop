@@ -1,16 +1,20 @@
-MODULE=simple_chrdev
+MODULE=simple_lifo_chrdev
 obj-m = $(MODULE).o
 KVERSION = $(shell uname -r)
 CC=gcc
+CXX=g++
 
-TEST_OBJS=main_test.c
-TEST_BIN=main_test
+TEST_OBJS=test.cpp
+TEST_BIN=test
 
 all:
 	make -C /lib/modules/$(KVERSION)/build M=$(PWD) modules
 
-main_test.o: main_test.c
-	$(CC) -o $(TEST_BIN) $(TEST_OBJS) 
+test.o: test.cpp
+	$(CXX) -o $(TEST_BIN) $(TEST_OBJS) 
+
+reload_module:
+	unload_module && load_module
 
 load_module: $(MODULE).ko
 	insmod $(MODULE).ko
@@ -31,7 +35,8 @@ rm_device:
 	rm -rf $(DEV)
 
 print_kernel_log:
-	cat /var/log/syslog
+	dmesg
 
 clean:
 	make -C /lib/modules/$(KVERSION)/build M=$(PWD) clean
+	rm -rf *.o $(TEST_BIN)
