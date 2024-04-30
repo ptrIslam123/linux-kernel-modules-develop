@@ -18,7 +18,8 @@
 #define DEFAULT_DEVICE_BUFFER_SIZE (PAGE_SIZE * 1)
 #define DEVICE_COUNT (1)
 #define DEVICE_BASE_MINOR (0)
-#define DEVICE_NAME "my_simple_lifo_char_dev"
+#define DRIVER_NAME ("my_simple_lifo_char_dev")
+#define DEVICE_NAME ("my_simple_lifo_char_dev")
 #define DEVICE_CLASS_NAME "lifo_char_dev"
 
 #define POLL_DEVICE_IS_READY_FOR_READING (0)
@@ -283,6 +284,8 @@ static const struct file_operations char_file_ops = {
 };
 
 static int __init init_module_device(void) {
+    printk(KERN_INFO "Start initialization and registration of character lifo device module=%s\n", DRIVER_NAME);
+
     int ret;
 
     //! int alloc_chrdev_region(dev_t * dev, unsigned baseminor, unsigned count, const char * name); - Allocate device numbers dynamically
